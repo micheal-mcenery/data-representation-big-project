@@ -280,7 +280,7 @@ class FilmHubDAO:
 
     def createAvailabilityTable(self):
         cursor = self.getcursor()
-        sql="CREATE TABLE `filmhub`.`availability` (  `id` INT NOT NULL AUTO_INCREMENT,  `service_id` INT NULL,  `movie_id` INT NULL,  PRIMARY KEY (`id`),  INDEX `fk_service_idx` (`service_id` ASC),  INDEX `fk_movie_idx` (`movie_id` ASC),  CONSTRAINT `fk_service`    FOREIGN KEY (`service_id`)    REFERENCES `filmhub`.`streaming_site` (`id`)    ON DELETE NO ACTION    ON UPDATE NO ACTION,  CONSTRAINT `fk_movie`    FOREIGN KEY (`movie_id`)    REFERENCES `filmhub`.`movies` (`id`)    ON DELETE NO ACTION    ON UPDATE NO ACTION);"
+        sql="CREATE TABLE `availability` (  `id` INT NOT NULL AUTO_INCREMENT,  `service_id` INT NULL,  `movie_id` INT NULL,  PRIMARY KEY (`id`),  INDEX `fk_service_idx` (`service_id` ASC),  INDEX `fk_movie_idx` (`movie_id` ASC),  CONSTRAINT `fk_service`    FOREIGN KEY (`service_id`)    REFERENCES `streaming_site` (`id`)    ON DELETE NO ACTION    ON UPDATE NO ACTION,  CONSTRAINT `fk_movie`    FOREIGN KEY (`movie_id`)    REFERENCES `movies` (`id`)    ON DELETE NO ACTION    ON UPDATE NO ACTION));"
         cursor.execute(sql)
 
         self.connection.commit()
@@ -326,7 +326,7 @@ class FilmHubDAO:
 
     def createUserTable(self):
         cursor = self.getcursor() 
-        sql = "CREATE TABLE `filmhub`.`account` (   `id` INT NOT NULL AUTO_INCREMENT,   `user_name` VARCHAR(45) NOT NULL,   `password` VARCHAR(45) NOT NULL,   PRIMARY KEY (`id`));"
+        sql = "CREATE TABLE `account` (   `id` INT NOT NULL AUTO_INCREMENT,   `user_name` VARCHAR(45) NOT NULL,   `password` VARCHAR(45) NOT NULL,   PRIMARY KEY (`id`));"
         cursor.execute(sql)
 
         self.connection.commit()
@@ -344,7 +344,7 @@ class FilmHubDAO:
 
     def createAPIKeyTable(self):
         cursor = self.getcursor() 
-        sql = "CREATE TABLE `filmhub`.`apiKeys` (   `id` INT NOT NULL AUTO_INCREMENT,   `service` VARCHAR(45) NOT NULL,   `secret` VARCHAR(45) NOT NULL,   PRIMARY KEY (`id`));"
+        sql = "CREATE TABLE `apiKeys` (   `id` INT NOT NULL AUTO_INCREMENT,   `service` VARCHAR(45) NOT NULL,   `secret` VARCHAR(45) NOT NULL,   PRIMARY KEY (`id`));"
         cursor.execute(sql)
 
         self.connection.commit()
@@ -405,3 +405,7 @@ if __name__ == "__main__":
     availability = [(1,1), (4, 1), (5, 2), (1, 3), (6, 4), (5, 5), (5, 6), (6, 7), (1, 8), (1, 9), (6, 10), (6, 11), (6, 12), (3, 13), (6, 14), (2, 15), (6, 16), (3, 17), (3, 18), (2, 19), (2, 20), (5, 21)]
 
     filmHubDAO.createAvailabilitys(availability)
+
+    filmHubDAO.createAPIKeyTable()
+
+    filmHubDAO.createUserTable();
