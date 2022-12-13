@@ -681,7 +681,7 @@ function showUpdateDialog(data) {
     // load image defined in db, otherwise load the local image (null in db image column will result in looking for a local image)
     var image = data.image;
 
-    if (data.image == null) {
+    if (data.image == null && data.image=="null") {
         image = "/images/" + data.title + ".jpg";
     }
 
