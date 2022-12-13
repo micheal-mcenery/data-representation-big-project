@@ -809,7 +809,7 @@ function showMoviesByGenre(data, criteria) {
 function populatePosterRow(data) {
     for (var i = 0; i < data.length; i++) {
         var image = data[i].image;
-        if (data[i].image == null) {
+        if (data[i].image == null || data[i].image == "null") {
             image = "/images/" + data[i].title + ".jpg";
         }
 
