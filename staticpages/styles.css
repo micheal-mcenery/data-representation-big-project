@@ -5,9 +5,12 @@
 
 body {
     font-family: Arial, Helvetica, sans-serif;
-    background-image: url("images/banner.jpg");
+    background: url("images/banner.jpg") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
     background-size: cover;
- background-repeat: no-repeat;
+    overflow: hidden;
 }
 
 .row__poster {
@@ -53,8 +56,14 @@ body {
 
 
 .row__posterLarge {
-    max-height: 400px;
-    max-width: 400px;
+    max-width: 300px;
+    width: 15%;
+    object-fit: fill;
+}
+
+.posterDialog {
+    object-fit: fill;
+    max-width:300px;
 }
 
 .row__posterMedium {
@@ -86,14 +95,11 @@ body {
     object-fit: contain;
     max-height: 100px;
     max-width: 300px;
-    margin: 0 50px 0 50px;
+    margin: 10px 50px 0 50px;
  }
 
  .banner__buttons {
-    display: flex;
-    overflow-y: hidden;
-    overflow-x: scroll;
-    padding: 50px;
+    margin: 10px 0 50px 50px;
  }
 
  .banner__buttons::-webkit-scrollbar {
