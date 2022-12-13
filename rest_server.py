@@ -104,6 +104,7 @@ def update(title):
 @app.route('/movies/<string:title>', methods=['DELETE'])
 def delete(title):
     if 'loggedin' in session:
+        filmHubDAO.deleteAvailability(title)
         return filmHubDAO.deleteMovie(title)
     else:
         # 403 Forbidden is returned i.e. user is not authorised
@@ -159,7 +160,7 @@ def loginStatus():
             return "True"
         else:
             return 'False'
-            
+
 # return the api key for the specified service
 @app.route('/api/key/<string:service>', methods=["GET"])
 def findByApiSecret(service):
