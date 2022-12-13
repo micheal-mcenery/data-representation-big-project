@@ -280,7 +280,7 @@ class FilmHubDAO:
 
     def createAvailabilityTable(self):
         cursor = self.getcursor()
-        sql="CREATE TABLE `availability` (  `id` INT NOT NULL AUTO_INCREMENT,  `service_id` INT NULL,  `movie_id` INT NULL,  PRIMARY KEY (`id`),  INDEX `fk_service_idx` (`service_id` ASC),  INDEX `fk_movie_idx` (`movie_id` ASC),  CONSTRAINT `fk_service`    FOREIGN KEY (`service_id`)    REFERENCES `streaming_site` (`id`)    ON DELETE NO ACTION    ON UPDATE NO ACTION,  CONSTRAINT `fk_movie`    FOREIGN KEY (`movie_id`)    REFERENCES `movies` (`id`)    ON DELETE NO ACTION    ON UPDATE NO ACTION);"
+        sql="CREATE TABLE `availability` (  `id` int(11) NOT NULL AUTO_INCREMENT,  `service_id` int(11) DEFAULT NULL,  `movie_id` int(11) DEFAULT NULL,  PRIMARY KEY (`id`),  KEY `fk_service_idx` (`service_id`),  KEY `fk_movie_idx` (`movie_id`));"
         cursor.execute(sql)
 
         self.connection.commit()
