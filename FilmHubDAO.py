@@ -357,15 +357,31 @@ class FilmHubDAO:
                 password=   self.password,
         )
         self.cursor = self.connection.cursor()
-        sql= "DROP database "+self.database+"; create database "+ self.database+";"
+        
+        sql= "create database "+ self.database+";"
         self.cursor.execute(sql)
 
         self.connection.commit()
         self.closeAll()
+
+    def dropDatabase(self):
+            self.connection = mysql.connector.connect(
+                    host=       self.host,
+                    user=       self.user,
+                    password=   self.password,
+            )
+            self.cursor = self.connection.cursor()
+            
+            sql= "DROP "+ self.database
+            self.cursor.execute(sql)
+
+            self.connection.commit()
+            self.closeAll()        
         
 filmHubDAO = FilmHubDAO()
 
 if __name__ == "__main__":
+    filmHubDAO.dropDatabase()
     filmHubDAO.createdatabase()
     filmHubDAO.createMoviesTable()
 
