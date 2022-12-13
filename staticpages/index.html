@@ -815,7 +815,7 @@ function populatePosterRow(data) {
 
         //for each movie add the poster and set the onclick listener on each along with a default image if its not available locally
         $("#posters").append(
-            "<img onerror=\"this.onerror=null; this.src='images/default.jpg'\" onclick=\"setSearchCriteria('" + data[i].title + '\')" src=" ' + image + ' " alt="' + data[i].title + '" class="row__poster row__posterLarge"/>'
+            "<img onerror=\"this.onerror=null; this.src='images/default.jpg'\" onclick=\"setSearchCriteria('" + data[i].title.replace(/'/g,"\\'") + '\')" src=" ' + image + ' " alt="' + data[i].title + '" class="row__poster row__posterLarge"/>'
         );
     }
 }
