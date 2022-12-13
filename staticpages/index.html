@@ -274,13 +274,13 @@ let omdbApiKey = ''
 
 // run javascript once the page is loaded
 $(document).ready(function () {
+    getApiSecret("OMDB")
     // initialise jqueryui tabs and set the first tab to active
     $("#tabs").tabs({
         active: 0,
     });
     refreshPopularNow();
     loginStatus();
-    getApiSecret("OMDB")
 });
 // get all movies and display in the popular now section
 function refreshPopularNow() {
