@@ -284,7 +284,7 @@ $(document).ready(function () {
 });
 // get all movies and display in the popular now section
 function refreshPopularNow() {
-    $.get("http://localhost:5000/movies", function (data, status) {
+    $.get(serverUrl+"/movies", function (data, status) {
         //use these 3 lists for autocomplete/dropdowns
         var movies = [];
         var genres = [];

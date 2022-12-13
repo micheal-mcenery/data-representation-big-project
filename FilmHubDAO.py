@@ -357,7 +357,7 @@ class FilmHubDAO:
                 password=   self.password,
         )
         self.cursor = self.connection.cursor()
-        sql= "create database "+ self.database
+        sql= "DROP database "+self.database+"; create database "+ self.database+";"
         self.cursor.execute(sql)
 
         self.connection.commit()
