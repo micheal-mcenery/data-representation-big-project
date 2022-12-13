@@ -284,6 +284,7 @@ $(document).ready(function () {
 });
 // get all movies and display in the popular now section
 function refreshPopularNow() {
+    
     $.get(serverUrl+"/movies", function (data, status) {
         //use these 3 lists for autocomplete/dropdowns
         var movies = [];
@@ -291,8 +292,9 @@ function refreshPopularNow() {
         var directors = [];
         //blank the poster row so we dont get duplicates later on
         $("#posters").html("");
-        //clear the genre dropdow
+        //clear the genre dropdown
         $("#ddGenre").empty();
+        genres.push("Select a genre...")
         populatePosterRow(data);
         for (var i = 0; i < data.length; i++) {
             //keep a list of movies for the autocomplete later
@@ -818,6 +820,8 @@ function populatePosterRow(data) {
             "<img onerror=\"this.onerror=null; this.src='images/default.jpg'\" onclick=\"setSearchCriteria('" + data[i].title.replace(/'/g,"\\'") + '\')" src=" ' + image + ' " alt="' + data[i].title + '" class="row__poster row__posterLarge"/>'
         );
     }
+
+    $("#ddGenre option:first").prop('selected','selected');
 }
 
 
