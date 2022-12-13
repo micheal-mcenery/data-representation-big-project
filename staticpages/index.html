@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Data Representation Project</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+	<link rel="stylesheet" href="styles.css" />
+	<link href="https://code.jquery.com/ui/1.13.2/themes/eggplant/jquery-ui.css" rel="stylesheet">
+</head>
+
+<body>
+	<!-- header -->
+	<div class="banner">
+		<div class="banner__contents">
+			<h1 class="banner__title" style="cursor:pointer;" onclick="refreshPopularNow()">FilmHub</h1>
+			<div class="banner__buttons">
+				<img src="images/netflix.png" class="banner__button" onclick="searchByStreamingSite('Netflix')">
+				<img src="images/amazon prime video.png" class="banner__button" onclick="searchByStreamingSite('Amazon Prime Video')">
+				<img src="images/disney+.png" class="banner__button" onclick="searchByStreamingSite('Disney')">
+				<img src="images/paramount+.png" class="banner__button" onclick="searchByStreamingSite('Paramount')">
+				<img src="images/sky go.png" class="banner__button" onclick="searchByStreamingSite('Sky Go')">
+				<img src="images/apple tv.png" class="banner__button" onclick="searchByStreamingSite('Apple TV')">
+			</div>
+			<!-- Search Tabs -->
+			<div id="tabs" style="width:40%" class="ui-tabs ui-corner-all ui-widget ui-widget-content">
+				<ul class="nav nav-tabs">
+					<li class="nav-item"><a href="#fragment-1">Search by Title</a></li>
+					<li class="nav-item"><a href="#fragment-2">Search by ID</a></li>
+					<li class="nav-item"><a href="#fragment-3">Search by Director</a></li>
+					<li class="nav-item"><a href="#fragment-4">Search by Genre</a></li>
+					<li class="nav-item"><a href="#fragment-5">Admin</a></li>
+				</ul>
+				<!-- Title Tab -->
+				<div class="ui-tabs" id="fragment-1">
+					<form class="search__bar" onsubmit="event.preventDefault()">
+						<input type="text" id="searchBarTitle" placeholder="Search Title">
+						<button id="bSearchTitle" type="button" class="btn btn-secondary" onclick="searchMovieByTitle()">Search</button>
+					</form>
+				</div>
+				<!-- Id Tab -->
+				<div class="ui-tabs" id="fragment-2">
+					<form class="search__bar" onsubmit="event.preventDefault()">
+						<input type="text" id="searchBarId" placeholder="Search ID">
+						<button id="bSearchId" type="button" class="btn btn-secondary" onclick="searchMovieById()">Search</button>
+					</form>
+				</div>
+				<!-- Director Tab -->
+				<div class="ui-tabs" id="fragment-3">
+					<form class="search__bar" onsubmit="event.preventDefault()">
+						<input type="text" id="searchBarDirector" placeholder="Search Director">
+						<button id="bSearchDirector" type="button" class="btn btn-secondary" onclick="searchMovieByDirector()">Search</button>
+					</form>
+				</div>
+				<!-- Genre Tab -->
+				<div class="ui-tabs" id="fragment-4">
+					<form class="search__bar" onsubmit="event.preventDefault()">
+						<select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="ddGenre" id="ddGenre" onchange="searchMovieByGenre()">
+							<option selected>Select a genre...</option>
+						</select>
+					</form>
+				</div>
+				<!-- Admin Tab -->
+				<div class="ui-tabs" id="fragment-5">
+					<form class="search__bar" onsubmit="event.preventDefault()">
+						<button id="bAddMovie" type="button" class="btn btn-secondary" onclick="showAddMovieDialog()">Add Movie</button>
+						<button id="bLogin" type="button" class="btn btn-success" onclick="showLoginDialog()">Login</button>
+						<button id="bLogout" type="button" class="btn btn-danger" onclick="logout()">Logout</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Popular Now -->
+	<div class="bottom_row">
+		<h2 id="posterSliderTitle">POPULAR NOW</h2>
+		<div class="row__posters" id="posters">
+		</div>
+	</div>
+	<!-- Movie Details modal (available on poster click or title/ID search) -->
+	<div id="myModal" class="modal fade" tabindex="-1">
+		<div class="modal-dialog  modal-xl">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="dMovieTitle">Movie Details</h4>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+				</div>
+				<!-- Contents of Movie Details modal -->
+				<div class="modal-body">
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col-md-4"><img id="dImage" src="" alt="" class="row__posterLarge"></div>
+							<div class="col-md-8">
+								<div class="row">
+									<p class="fs-5"><strong>Title: </strong><span id="dTitle"></p>
+									<p class="fs-5"><strong>Director: </strong><span id="dDirector"></p>
+									<p class="fs-5"><strong>Genre: </strong><span id="dGenre"></p>
+									<p class="fs-5"><strong>Streaming On: </strong><span id="dStreaming"></p>
+									<p class="fs-5"><strong><em>OMDB Details</em></strong><span id="dOmdb"></p>
+									<p class="fs-5"><strong>Actors: </strong><span id="dOmdbActors"></p>
+									<p class="fs-5"><strong>Released: </strong><span id="dOmdbReleased"></p>
+									<p class="fs-5"><strong>Summary: </strong><span id="dOmdbSummary"></p>
+									<p class="fs-5"><strong>Reviews: </strong><span id="dOmdbReviews"></p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- Movie Details bottom row (contains CRUD related buttons) -->
+				<div class="modal-footer">
+					<button type="button" class="btn btn-warning" onclick="prepareUpdateDialog()">Update</button>
+					<button type="button" class="btn btn-danger" onclick="deleteMovie()">Delete</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Add Movie modal -->
+	<div id="modalAddMovie" class="modal fade" tabindex="-1">
+		<div class="modal-dialog  modal-xl">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Add Movie Details</h4>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+				</div>
+				<!-- Add Movie modal contents -->
+				<div class="modal-body">
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col-md-4"><img id="dAmImage" src="" alt="" class="row__posterLarge"></div>
+							<div class="col-md-8">
+								<div class="row">
+									<!-- Add Movie Title -->
+									<div class="mb-3">
+										<label for="tbMovieTitle" class="form-label">Movie Title</label>
+										<input type="text" class="form-control" id="tbMovieTitle" placeholder="Movie Title">
+									</div>
+									<!-- Auto fill from OMDb API base on title -->
+									<div class="mb-3">
+										<button type="button" oncl class="btn btn-outline-info btn-sm" onclick="autoFillDetails()">Auto Fill from OMDB</button>
+									</div>
+									<!-- Add Movie Director -->
+									<div class="mb-3">
+										<label for="tbMovieDirector" class="form-label">Director</label>
+										<input type="text" class="form-control" id="tbMovieDirector" placeholder="Director">
+									</div>
+									<!-- Add Movie Genre -->
+									<div class="mb-3">
+										<label for="tbMovieGenre" class="form-label">Genre</label>
+										<input type="text" class="form-control" id="tbMovieGenre" placeholder="Genre">
+									</div>
+									<!-- Add Streaming Services from dropdown -->
+									<div>
+										<form class="" onsubmit="event.preventDefault()">
+											<label for="tbMovieGenre" class="form-label">Streaming Service</label>
+											<select class="form-select form-select-md mb-3" multiple aria-label=".form-select-lg example" name="ddStreamingService" id="ddStreamingService">
+											</select>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- Add Movie modal bottom row (CRUD related button) -->
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" onclick="addMovie()">Save</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+	<!-- Update Movie modal -->
+	<div id="modalUpdateMovie" class="modal fade" tabindex="-1">
+		<div class="modal-dialog  modal-xl">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Update Movie Details</h4>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+				</div>
+				<!-- Update Movie modal contents -->
+				<div class="modal-body">
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col-md-4"><img id="dImage" src="" alt="" class="row__posterLarge"></div>
+							<div class="col-md-8">
+								<div class="row">
+									<!-- Update Title (Read Only, For Reference) -->
+									<div class="mb-3">
+										<label for="tbMovieTitle" class="form-label">Movie Title</label>
+										<input type="text" readonly class="form-control" id="tbMovieTitle" placeholder="Movie Title">
+									</div>
+									<!-- Update Director (Read Only, For Reference) -->
+									<div class="mb-3">
+										<label for="tbMovieDirector" class="form-label">Director</label>
+										<input type="text" readonly class="form-control" id="tbMovieDirector" placeholder="Director">
+									</div>
+									<!-- Update Genre -->
+									<div class="mb-3">
+										<label for="tbMovieGenre" class="form-label">Genre</label>
+										<input type="text" class="form-control" id="tbMovieGenre" placeholder="Genre">
+									</div>
+									<!-- Update Streaming Service -->
+									<div>
+										<form class="" onsubmit="event.preventDefault()">
+											<label for="tbMovieGenre" class="form-label">Streaming Service</label>
+											<select class="form-select form-select-md mb-3" multiple aria-label=".form-select-lg example" name="ddStreamingService" id="ddStreamingService">
+											</select>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- Update Movie modal bottom row (CRUD related button) -->
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" onclick="updateMovie()">Save</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- User Login modal -->
+	<div id="modalLogin" class="modal fade" tabindex="-1">
+		<div class="modal-dialog  modal-md">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">User Login</h4>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+				</div>
+				<!-- User Login modal content -->
+				<div class="modal-body">
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col-md-8">
+								<div class="row">
+									<!-- Enter Username -->
+									<div class="mb-3">
+										<label for="tbUsername" class="form-label">Username</label>
+										<input type="text" class="form-control" id="tbUsername" placeholder="username">
+									</div>
+									<!-- Enter Password -->
+									<div class="mb-3">
+										<label for="Password" class="form-label">Password</label>
+										<input type="text" class="form-control" id="tbPassword" placeholder="password">
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- User Login modal bottom row -->
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" id="bLogin" onclick="login()">Login</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<!-- Import JQuery -->
+<script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+<!-- Import BootStrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+<!-- Import JQueryUI -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js" integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<!-- Javascript -->
+<script>
+// Identify Server URL
+let serverUrl = window.location.protocol + "//" + window.location.host
+// OMBd API Key
+let omdbApiKey = ''
+
+// run javascript once the page is loaded
+$(document).ready(function () {
+    // initialise jqueryui tabs and set the first tab to active
+    $("#tabs").tabs({
+        active: 0,
+    });
+    refreshPopularNow();
+    loginStatus();
+    getApiSecret("OMDB")
+});
+// get all movies and display in the popular now section
+function refreshPopularNow() {
+    $.get("http://localhost:5000/movies", function (data, status) {
+        //use these 3 lists for autocomplete/dropdowns
+        var movies = [];
+        var genres = [];
+        var directors = [];
+        //blank the poster row so we dont get duplicates later on
+        $("#posters").html("");
+        //clear the genre dropdow
+        $("#ddGenre").empty();
+        populatePosterRow(data);
+        for (var i = 0; i < data.length; i++) {
+            //keep a list of movies for the autocomplete later
+            movies.push(data[i].title);
+            //prevent duplicate directors being added to the list
+            if (!directors.includes(data[i].director)) {
+                directors.push(data[i].director);
+            }
+            //prevent duplicate genres being added to the list
+            if (data[i].genre != "" && !genres.includes(data[i].genre)) {
+                genres.push(data[i].genre);
+            }
+        }
+        //set the poster row title
+        $("#posterSliderTitle").text("POPULAR NOW");
+
+        $("#searchBarTitle").autocomplete({
+            source: movies,
+        });
+
+        $("#searchBarDirector").autocomplete({
+            source: directors,
+        });
+
+        //populate genre dropdown
+        for (var i = 0; i < genres.length; i++) {
+            $("#ddGenre").append('<option value="' + genres[i] + '">' + genres[i] + "</option>");
+        }
+    });
+}
+
+/*
+ * Populate the dropdown with the streaming services and mark the selected ones as selected for the UI
+ */
+function populateStreamingServicesDropDown(id, data, movie) {
+    $(id).empty();
+    for (var i = 0; i < data.length; i++) {
+        //check that we have a movie and check which streaming services its available on
+        if (movie != undefined && movie.availability.some((d) => d.service_name == data[i].service_name)) {
+            $(id).append('<option selected value="' + data[i].service_name + '">' + data[i].service_name + "</option>");
+        } else {
+            $(id).append('<option value="' + data[i].service_name + '">' + data[i].service_name + "</option>");
+        }
+    }
+}
+
+/*
+ * get the streaming services from the StreamingServices API (GET)
+ */
+function getStreamingServices(id, movie) {
+    $.get({
+        url: serverUrl + "/movies/service",
+        type: "GET",
+        success: function (data) {
+            populateStreamingServicesDropDown(id, data, movie);
+        },
+    });
+}
+
+/*
+ * Show the dialog to add a movie and fill the streaming services dropdown
+ */
+function showAddMovieDialog() {
+    getStreamingServices("#modalAddMovie #ddStreamingService");
+    $("#modalAddMovie").modal("show");
+}
+
+/*
+ *	when a poster is clicked, the search by title functionality is triggered
+ */
+function setSearchCriteria(criteria) {
+    $("#searchBarTitle").val(criteria);
+    $("#bSearchTitle").click();
+}
+
+/*
+ *	Search movie by title GET API
+ */
+function searchMovieByTitle() {
+    var criteria = $("#searchBarTitle").val();
+    $.get(serverUrl + "/movies/title/" + criteria + "", function (data, status) {
+        var movies = "";
+        //check that we actually have a movie before showing the dialog
+        if (data.length > 0) {
+            showDialog(data[0]);
+        } else {
+            alert("No movie found");
+        }
+    });
+}
+
+/*
+ *	Search movie by director GET API
+ */
+function searchMovieByDirector() {
+    var criteria = $("#searchBarDirector").val();
+    $.get(serverUrl + "/movies/director/" + criteria + "", function (data, status) {
+        var movies = "";
+        if (data.length > 0) {
+            showMoviesByDirector(data, criteria);
+        } else {
+            alert("No movie found");
+        }
+    });
+}
+
+/*
+ * Search movies by streaming service GET API
+ */
+function searchByStreamingSite(criteria) {
+    $.get(serverUrl + "/movies/service/" + criteria + "", function (data, status) {
+        var movies = "";
+        if (data.length > 0) {
+            showMoviesByStreamingSite(data, criteria);
+        } else {
+            alert("No movie found");
+        }
+    });
+}
+
+/*
+ * Search movies by genre GET API
+ */
+function searchMovieByGenre() {
+    var criteria = $("#ddGenre").find(":selected").text();
+    if (criteria !== "Select a genre...") {
+        $.get(serverUrl + "/movies/genre/" + criteria + "", function (data, status) {
+            if (data.length > 0) {
+                showMoviesByGenre(data, criteria);
+            } else {
+                alert("No movie found");
+            }
+        });
+    }
+}
+
+/*
+ *	Search movies by ID GET API (and show the dialog with the movie details)
+ */
+function searchMovieById() {
+    var criteria = $("#searchBarId").val();
+    $.get(serverUrl + "/movies/" + criteria + "", function (data, status) {
+        if (data.title != undefined) {
+            showDialog(data);
+        } else {
+            alert("No movie found");
+        }
+    });
+}
+
+/*
+ *	Add movie using the POST API
+ */
+function addMovie() {
+    //get the title/direct/genre/selected streaming service availability from the user input
+    var title = $("#tbMovieTitle").val();
+    var director = $("#tbMovieDirector").val();
+    var genre = $("#tbMovieGenre").val();
+    var poster = $("#dAmImage").prop("src");
+    var streamingService = [];
+
+    //find the selected streaming services that the movie is available on
+    $("#ddStreamingService")
+        .find(":selected")
+        .each(function () {
+            streamingService.push($(this).text());
+        });
+
+    // we only take one director
+    if (director.includes(",")) {
+        director = director.split(",")[0];
+    }
+
+    //we only take one genre
+    if (genre.includes(",")) {
+        genre = genre.split(",")[0];
+    }
+
+    // construct a string for sending to the API for services
+    var service_names = "";
+
+    for (var i = 0; i < streamingService.length; i++) {
+        service_names += '{"service_name":"' + streamingService[i] + '"}';
+        if (i + 1 != streamingService.length) {
+            service_names += ",";
+        }
+    }
+
+    // outer wrapper for our services so that they are within an array for sending to the API
+    var services = '"service":[' + service_names + "]";
+
+    $.ajax({
+        url: serverUrl + "/movies",
+        type: "POST",
+        data: '{"image":"' + poster + '","title":"' + title.trim() + '","director":"' + director.trim() + '","genre":"' + genre.trim() + '",' + services + "}",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+            alert("Movie has been added to the database");
+            $("#modalAddMovie").modal("hide");
+            clearAddMovieModalContents();
+            refreshPopularNow();
+        },
+    });
+}
+
+/*
+ *	show the dialog window (bootstrap modal) with the selected movies details
+ */
+function showDialog(movie) {
+    $("#dTitle").text(movie.title);
+    $("#dDirector").text(movie.director);
+    $("#dGenre").text(movie.genre);
+    //sets the image from the local file if available (will be overridden by OMDB API call later)
+    $("#dImage").attr("src", "images/" + movie.title + ".jpg");
+
+    // list the streaming service availability in a comma seperated format
+    var streamingOn = "";
+    for (var i = 0; i < movie.availability.length; i++) {
+        streamingOn += movie.availability[i].service_name;
+        //only add the comma if we have another streaming service to add to the string
+        if (i + 1 != movie.availability.length) {
+            streamingOn += ", ";
+        }
+    }
+    $("#dStreaming").text(streamingOn);
+    //show the modal
+    $("#myModal").modal("show");
+
+    getOmdbDetails(movie.title);
+}
+
+/*
+ *	Show the popup login dialog modal to the user
+ */
+function showLoginDialog(movie) {
+    $("#tbUsername").empty();
+    $("#tbPassword").empty();
+
+    $("#modalLogin").modal("show");
+}
+
+/* 
+* get the api key that is stored in the apikeys table in the DB as we dont want to have our secret key pubic 
+*/
+function getApiSecret(service){
+    $.ajax({
+        url: serverUrl + "/api/key/"+service,
+        success:function(data){
+            omdbApiKey = data.secret
+        },
+        // set async to false so that we have the key available before trying to load any third party data otherwise we may not have an api key loaded 
+        async: false
+    })
+}
+
+/*
+ *	Call the 3rd party omdb API to retrieve movie details based on the title
+ */
+function getOmdbDetails(movieTitle) {
+    $.get({
+        url: "http://www.omdbapi.com/?apikey=" + omdbApiKey + "&type=movie&t=" + movieTitle + "",
+        type: "GET",
+        dataType: "jsonp",
+        jsonpCallback: "processJSONPResponse",
+        contentType: "application/json; charset=utf-8",
+        success: function (result, status, xhr) {
+            //check where these details need to be show, either in the movie summary screen or the add movie screen
+            if ($("#myModal").is(":visible")) {
+                showOmdbMovieDetails(result);
+            }
+            if ($("#modalAddMovie").is(":visible")) {
+                populateOmdbMovieDetails(result);
+            }
+        },
+        error: function (xhr, status, error) {
+            console.log("Result: " + status + " " + error + " " + xhr.status + " " + xhr.statusText);
+        },
+    });
+}
+
+/*
+ *	Insert the OMDB movie details into the specified fields (when showing movie summary)
+ */
+function showOmdbMovieDetails(data) {
+    $("#dOmdbActors").text(data.Actors);
+    $("#dOmdbReleased").text(data.Released + " (" + data.Country + ")");
+    $("#dOmdbSummary").text(data.Plot);
+    $("#dImage").attr("src", data.Poster);
+    // format the reviews in a comma seperated format while ensuring we dont have a stray comma at the end
+    var reviews = "<ul>";
+    for (var i = 0; i < data.Ratings.length; i++) {
+        reviews += "<li>" + data.Ratings[i].Value + " (" + data.Ratings[i].Source + ")</li>";
+    }
+    reviews += "</ul>";
+    $("#dOmdbReviews").html(reviews);
+}
+
+/*
+ *	Insert the OMDB movie details into the specified fields (when adding a movie)
+ */
+function populateOmdbMovieDetails(data) {
+    $("#tbMovieDirector").val(data.Director);
+    $("#tbMovieGenre").val(data.Genre);
+    $("#dAmImage").attr("src", data.Poster);
+}
+
+/*
+ *	Function called by the 'Auto Fill from OMDB' button to get the movie title specified by the user and use that to call the 3rd party OMDB API
+ */
+function autoFillDetails() {
+    var title = $("#tbMovieTitle").val();
+    getOmdbDetails(title);
+}
+
+/*
+ *	Blank out the fields on the add movie modal so that they dont show old info when the dialog is shown again
+ */
+function clearAddMovieModalContents() {
+    $("#tbMovieTitle").val("");
+    $("#tbMovieDirector").val("");
+    $("#tbMovieGenre").val("");
+    $("#ddStreamingService").empty();
+    $("#dAmImage").attr("src", "");
+}
+
+/*
+ *	Call the DELETE movie API using the movie title from the dialog
+ */
+function deleteMovie(title) {
+    var title = $("#dTitle").text();
+    $.ajax({
+        url: serverUrl + "/movies/" + title,
+        type: "DELETE",
+        success: function (data) {
+            alert("Deleted " + title + " from the database");
+            $("#myModal").modal("hide");
+            refreshPopularNow();
+        },
+        error: function (xhr, status, error) {
+            if (error.includes("FORBIDDEN")) {
+                alert("You must be logged in to carry out this operation, error: " + error);
+            } else {
+                alert("Could not delete the movie");
+            }
+        },
+    });
+}
+
+/*
+ * Get the title for update, get the latest movie details from our GET API (so they are the latest) and show the update dialog
+ */
+function prepareUpdateDialog() {
+    var title = $("#myModal #dTitle").text();
+    $("#myModal").modal("hide");
+    $.get(serverUrl + "/movies/title/" + title + "", function (data, status) {
+        if (data.length > 0) {
+            showUpdateDialog(data[0]);
+        } else {
+            alert("No movie found");
+        }
+    });
+}
+
+/*
+ * Shows tthe update dialog, populates the streaming sevice multiselect, and sets the poster image
+ */
+function showUpdateDialog(data) {
+    getStreamingServices("#modalUpdateMovie #ddStreamingService", data);
+    $("#modalUpdateMovie #tbMovieTitle").val(data.title);
+    $("#modalUpdateMovie #tbMovieGenre").val(data.genre);
+    $("#modalUpdateMovie #tbMovieDirector").val(data.director);
+
+    // load image defined in db, otherwise load the local image (null in db image column will result in looking for a local image)
+    var image = data.image;
+
+    if (data.image == null) {
+        image = "/images/" + data.title + ".jpg";
+    }
+
+    $("#modalUpdateMovie #dImage").attr("src", image);
+    $("#modalUpdateMovie").modal("show");
+}
+
+/*
+ * call our login API with the details from the username and password fields from the login dialog
+ */
+function login() {
+    var username = $("#tbUsername").val();
+    var password = $("#tbPassword").val();
+
+    $.ajax({
+        url: serverUrl + "/login",
+        type: "POST",
+        data: '{"username":"' + username.trim() + '","password":"' + password.trim() + '"}',
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+            $("#bLogin").hide();
+            $("#bLogout").show();
+            alert("You are now logged in, you can now DELETE movies from the database!");
+            $("#modalLogin").modal("hide");
+        },
+        error: function (xhr, status, error) {
+            alert("Could not log in with the credentials provided: " + error);
+        },
+    });
+}
+
+/*
+ * Call the logout API so that our session is removed
+ */
+function logout() {
+    $.ajax({
+        url: serverUrl + "/logout",
+        type: "GET",
+        success: function (data) {
+            $("#bLogin").show();
+            $("#bLogout").hide();
+            alert("You are now logged out, you cannot DELETE movies from the database anymore");
+        },
+        error: function (xhr, status, error) {
+            alert("Could not logout: " + error);
+        },
+    });
+}
+
+/*
+ *	Call the update movie PUT API
+ */
+function updateMovie() {
+    var title = $("#modalUpdateMovie #tbMovieTitle").val();
+    var genre = $("#modalUpdateMovie #tbMovieGenre").val();
+    // we need to know what streaming services the user has selected for this movie
+    var streamingService = [];
+    $("#modalUpdateMovie #ddStreamingService")
+        .find(":selected")
+        .each(function () {
+            streamingService.push($(this).text());
+        });
+    // construct the services into a string to use in our API call
+    var service_names = "";
+    for (var i = 0; i < streamingService.length; i++) {
+        service_names += '{"service_name":"' + streamingService[i] + '"}';
+        if (i + 1 != streamingService.length) {
+            service_names += ",";
+        }
+    }
+    //wrapped string for our services
+    var services = '"service":[' + service_names + "]";
+    $.ajax({
+        url: serverUrl + "/movies/" + title.trim(),
+        type: "PUT",
+        data: '{"genre":"' + genre.trim() + '",' + services + "}",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+            alert("Updated " + title + " in the database");
+            $("#modalUpdateMovie").modal("hide");
+            refreshPopularNow();
+        },
+    });
+}
+
+/*
+ *	Login status API GET - this allows us to know if the user has an active session or not, and we show the login/logout button based on the status
+ */
+function loginStatus() {
+    $.ajax({
+        url: serverUrl + "/login/status",
+        type: "GET",
+        success: function (data) {
+            if (data.includes("True")) {
+                $("#bLogin").hide();
+                $("#bLogout").show();
+            } else {
+                $("#bLogin").show();
+                $("#bLogout").hide();
+            }
+        },
+    });
+}
+
+/*
+ *	Change the popular now poster now to show movies by director
+ */
+function showMoviesByDirector(data, criteria) {
+    $("#posterSliderTitle").text("Movies by " + criteria);
+    $("#posters").html("");
+    populatePosterRow(data);
+}
+
+/*
+ *	Change the popular now poster now to show movies by streaming site
+ */
+function showMoviesByStreamingSite(data, criteria) {
+    $("#posterSliderTitle").text("Movies by " + criteria);
+    $("#posters").html("");
+    populatePosterRow(data);
+}
+
+/*
+ *	Change the popular now poster now to show movies by genre
+ */
+function showMoviesByGenre(data, criteria) {
+    $("#posterSliderTitle").text(criteria + " Movies");
+    $("#posters").html("");
+    populatePosterRow(data);
+}
+
+/*
+ * Add the posters to the poster row and add the click listeners & setup the images
+ */
+function populatePosterRow(data) {
+    for (var i = 0; i < data.length; i++) {
+        var image = data[i].image;
+        if (data[i].image == null) {
+            image = "/images/" + data[i].title + ".jpg";
+        }
+
+        //for each movie add the poster and set the onclick listener on each along with a default image if its not available locally
+        $("#posters").append(
+            "<img onerror=\"this.onerror=null; this.src='images/default.jpg'\" onclick=\"setSearchCriteria('" + data[i].title + '\')" src=" ' + image + ' " alt="' + data[i].title + '" class="row__poster row__posterLarge"/>'
+        );
+    }
+}
+
+
+
+</script>
+
+</html>

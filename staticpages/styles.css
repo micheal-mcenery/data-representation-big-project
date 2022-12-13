@@ -1,0 +1,134 @@
+*{
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-image: url("images/banner.jpg");
+    background-size: cover;
+ background-repeat: no-repeat;
+}
+
+.row__poster {
+    width: 100%;
+    object-fit: contain;
+    max-height: 500px;
+    margin-right: 10px;
+    transition: transform 450ms;
+}
+
+.row__posters {
+    display: flex;
+    overflow-y: hidden;
+    overflow-x: scroll;
+    padding: 20px;
+}
+
+.row__poster:hover {
+    transform: scale(1.08);
+}
+
+.row__posters::-webkit-scrollbar {
+    background: lightgrey; 
+    border-radius: 10px;
+}
+
+/* Track */
+.row__posters::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey; 
+    border-radius: 10px;
+  }
+   
+  /* Handle */
+  .row__posters::-webkit-scrollbar-thumb {
+    background: darkmagenta; 
+    border-radius: 10px;
+  }
+  
+  /* Handle on hover */
+  .row__posters::-webkit-scrollbar-thumb:hover {
+    background: blueviolet; 
+  }
+
+
+.row__posterLarge {
+    max-height: 400px;
+    max-width: 400px;
+}
+
+.row__posterMedium {
+    max-height: 300px;
+}
+
+
+.banner {
+    background-size: cover;
+    background-position: center center;
+    color: white;
+    object-fit: contain;
+    height: 500px;
+}
+
+.banner__title {
+    font-size: 60px;
+}
+
+ .banner__contents {
+    margin-left: 30px;
+    padding-top: 50px;
+    height: 190px;
+ }
+
+ .banner__button {
+    cursor: pointer;
+    width: 100%;
+    object-fit: contain;
+    max-height: 100px;
+    max-width: 300px;
+    margin: 0 50px 0 50px;
+ }
+
+ .banner__buttons {
+    display: flex;
+    overflow-y: hidden;
+    overflow-x: scroll;
+    padding: 50px;
+ }
+
+ .banner__buttons::-webkit-scrollbar {
+    display: none;
+}
+
+.search__bar{
+    width: 100%;
+    max-width: 700px;
+    background: rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    border-radius: 60px;
+    padding: 10px 20px;
+}
+
+.search__bar input{
+    background: transparent;
+    flex: 1;
+    border: 0;
+    outline: none;
+    padding: 24px 20px;
+    font-size: 20px;
+    color: white;
+}
+
+::placeholder{
+    color: white;
+}
+
+.bottom_row {
+    position: fixed;
+    left: 25px;
+    margin-right: 25px;
+    bottom: 0;
+    color: white;
+    text-align: left;
+  }
