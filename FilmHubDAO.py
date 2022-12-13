@@ -373,7 +373,7 @@ if __name__ == "__main__":
     data = [("Pulp Fiction", "Quentin Tarantino", "Crime","null"), 
             ("Kill Bill", "Quentin Tarantino", "Thriller","null"), 
             ("Inglourious Basterds", "Quentin Tarantino", "War","null"),
-            ("E.T the Extra-Terrestrial", "Steven Spielberg", "Science Fiction","null"),
+            ("E.T. the Extra-Terrestrial", "Steven Spielberg", "Science Fiction","null"),
             ("Jurassic Park", "Steven Spielberg", "Science Fiction","null"),
             ("Saving Private Ryan", "Steven Spielberg", "War","null"),
             ("Goodfellas", "Martin Scorsese", "Crime","null"),
