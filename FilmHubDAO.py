@@ -344,7 +344,7 @@ class FilmHubDAO:
 
     def createAPIKeyTable(self):
         cursor = self.getcursor() 
-        sql = "CREATE TABLE `apiKeys` (   `id` INT NOT NULL AUTO_INCREMENT,   `service` VARCHAR(45) NOT NULL,   `secret` VARCHAR(45) NOT NULL,   PRIMARY KEY (`id`));"
+        sql = "CREATE TABLE `apikeys` (   `id` INT NOT NULL AUTO_INCREMENT,   `service` VARCHAR(45) NOT NULL,   `secret` VARCHAR(45) NOT NULL,   PRIMARY KEY (`id`));"
         cursor.execute(sql)
 
         self.connection.commit()
