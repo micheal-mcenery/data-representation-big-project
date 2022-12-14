@@ -1,0 +1,333 @@
+{
+	"info": {
+		"_postman_id": "043a68ba-4e71-4afb-af5f-42d3a430c692",
+		"name": "Movies",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24759539"
+	},
+	"item": [
+		{
+			"name": "CreateMovie",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\":\"ay\",\r\n    \"director\":\"by\",\r\n    \"genre\":\"cy\",\r\n    \"image\":null,\r\n    \"service\":[\r\n    {\r\n        \"service_name\":\"Netflix\"\r\n    },\r\n    {\r\n        \"service_name\":\"Paramount\"\r\n    }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/movies",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"movies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"test\",\r\n    \"password\":\"test\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/login",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateMovie",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"genre\":\"Horror\",\r\n    \"service\":[\r\n    {\r\n        \"service_name\":\"Netflix\"\r\n    },\r\n    {\r\n        \"service_name\":\"Paramount\"\r\n    }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/movies/Kill Bill",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"movies",
+						"Kill Bill"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteMovie",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/movies/Mrs. Doubtfire",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"movies",
+						"Mrs. Doubtfire"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetMovieById",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}/movies/2",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"movies",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LoginStatus",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}/login/status",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"login",
+						"status"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}/logout",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetMovieByDirector",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}/movies/director/christopher nolan",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"movies",
+						"director",
+						"christopher nolan"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetMovieByGenre",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}/movies/genre/horror",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"movies",
+						"genre",
+						"horror"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetMovieByTitle",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}/movies/title/Kill Bill",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"movies",
+						"title",
+						"Kill Bill"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetMovieByStreamingSite",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}/movies/service/Netflix",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"movies",
+						"service",
+						"Netflix"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllMovies",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}/movies",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"movies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllStreamingServices",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}/movies/service",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"movies",
+						"service"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetApiSecret",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}/api/key/OMDB",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"api",
+						"key",
+						"OMDB"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "omdbGetMovieByTitle",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://www.omdbapi.com/?apikey={{apiKey}}&type=movie&t=Halloween",
+					"protocol": "http",
+					"host": [
+						"www",
+						"omdbapi",
+						"com"
+					],
+					"path": [
+						""
+					],
+					"query": [
+						{
+							"key": "apikey",
+							"value": "{{apiKey}}"
+						},
+						{
+							"key": "type",
+							"value": "movie"
+						},
+						{
+							"key": "t",
+							"value": "Halloween"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
