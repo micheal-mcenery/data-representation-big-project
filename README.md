@@ -19,10 +19,10 @@ Instructions
   1.	Clone the GitHub repository and pull down the latest files.
   2.	In the root directory of the repository, create a file called dbconfig_template.py
   3.	Update the contents of this file so that it is similar to the below (set the values as per your environment):
-        `mysql = {
+        ```mysql = {
           "host" : "<host>",
           "user" : "<user>",
           "password" : "<password>",
           "database" : "filmhub"
-        }`
+        }```
 
