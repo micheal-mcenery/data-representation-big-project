@@ -9,3 +9,20 @@ _Running from the web:_
         * Username: test
         * Password: test
   3.  Being logged in will give you full administration access, allowing you to delete movies from the database.
+
+_Running locally:_
+Prerequisites: 
+  1.	WAMP server is installed and running
+  2.	Flask is installed
+
+Instructions
+  1.	Clone the GitHub repository and pull down the latest files.
+  2.	In the root directory of the repository, create a file called dbconfig_template.py
+  3.	Update the contents of this file so that it is similar to the below (set the values as per your environment):
+        `mysql = {
+          "host" : "<host>",
+          "user" : "<user>",
+          "password" : "<password>",
+          "database" : "filmhub"
+        }`
+
