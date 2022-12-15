@@ -6,3 +6,6 @@ Below are details on how to run the program, as well as details on how each of t
 _Running from the web:_
   1.	Go to http://michealmcenery.pythonanywhere.com/
   2.  To login, please go to admin tab and enter the below login credentials:
+        * Username: test
+        * Password: test
+  3.  Being logged in will give you full administration access, allowing you to delete movies from the database.
